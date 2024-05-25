@@ -63,6 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Gap(10),
                         TextFormField(
+                          cursorColor: Colors.black,
                           controller: fullNameController,
                           validator: (val) =>
                               val!.isEmpty ? 'Full Name is Required' : null,
@@ -72,7 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Gap(20),
                         Text(
-                          "Full Name",
+                          "Username",
                           style: Theme.of(context)
                               .textTheme
                               .titleMedium!
@@ -80,6 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Gap(10),
                         TextFormField(
+                          cursorColor: Colors.black,
                           controller: usernameController,
                           validator: (val) =>
                               val!.isEmpty ? 'Username is Required' : null,
@@ -97,6 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Gap(10),
                         TextFormField(
+                          cursorColor: Colors.black,
                           controller: passwordController,
                           obscureText: true,
                           validator: (val) =>
@@ -112,12 +115,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 AuthService.register(
-                                        email: fullNameController.text,
+                                        fullName: fullNameController.text,
                                         username: usernameController.text,
                                         password: passwordController.text)
                                     .then((value) => Navigator.of(context)
                                         .pushReplacementNamed('/login'))
-                                    .onError((error, stackTrace) => null);
+                                    .onError(
+                                        (error, stackTrace) => print(error));
                               }
                             },
                             child: const Text("Register"),

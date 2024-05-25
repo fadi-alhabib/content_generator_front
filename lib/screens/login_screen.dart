@@ -3,7 +3,6 @@ import 'package:content_generator_front/helpers.dart';
 import 'package:content_generator_front/services/auth_service.dart';
 import 'package:content_generator_front/widgets/button.dart';
 import 'package:content_generator_front/widgets/circles_background.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gap/gap.dart';
@@ -77,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const Gap(10),
                       TextFormField(
+                        cursorColor: Colors.black,
                         controller: usernameController,
                         // validator: (val) => EmailValidator.validate(val!)
                         //     ? null
@@ -97,6 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       const Gap(10),
                       TextFormField(
+                        cursorColor: Colors.black,
                         controller: passwordController,
                         obscureText: true,
                         validator: (val) =>
@@ -117,7 +118,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       isLoading = true;
                                     });
                                     print(usernameController.text);
-                                    print(passwordController.text);
+
                                     AuthService.login(
                                             username: usernameController.text,
                                             password: passwordController.text)
@@ -125,10 +126,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                       setState(() {
                                         isLoading = false;
                                       });
-                                      return Navigator.pushNamedAndRemoveUntil(
+                                      return Navigator.pushReplacementNamed(
                                         context,
                                         '/home',
-                                        (route) => false,
                                       );
                                     }).onError(
                                             (error, stackTrace) => setState(() {
@@ -141,7 +141,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 },
                           child: isLoading
                               ? const Center(
-                                  child: CircularProgressIndicator(),
+                                  child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ),
                                 )
                               : const Text("Login"),
                         ),
@@ -162,7 +164,9 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyLarge!
-                                  .copyWith(color: primaryColor),
+                                  .copyWith(
+                                    color: Colors.white,
+                                  ),
                             ),
                           ),
                         ],

@@ -1,18 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:content_generator_front/constants.dart';
 import 'package:content_generator_front/helpers.dart';
 import 'package:content_generator_front/services/auth_service.dart';
+import 'package:content_generator_front/widgets/button.dart';
 import 'package:content_generator_front/widgets/circles_background.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:gap/gap.dart';
+import 'package:pie_chart/pie_chart.dart';
 import 'package:video_player/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -28,8 +26,8 @@ class _HomeScreenState extends State<HomeScreen>
   Uint8List? _videoBytes;
   bool isPause = false;
   late TabController tabController;
-  late TextEditingController commentController;
-  List<String> comments = [];
+  late TextEditingController urlController;
+  String? url;
 
   Future<void> _pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -58,7 +56,14 @@ class _HomeScreenState extends State<HomeScreen>
     super.initState();
 
     tabController = TabController(length: 4, vsync: this);
-    commentController = TextEditingController();
+    urlController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller!.dispose();
   }
 
   @override
@@ -77,7 +82,9 @@ class _HomeScreenState extends State<HomeScreen>
                           context: context,
                           builder: (context) => const AlertDialog(
                             title: Text(
-                                "something wrong happend, please try again later!"),
+                              "something wrong happend, please try again later!",
+                              style: TextStyle(color: Colors.amber),
+                            ),
                           ),
                         ));
               },
@@ -142,7 +149,18 @@ class _HomeScreenState extends State<HomeScreen>
                                       ? Icons.pause
                                       : Icons.play_arrow)),
                             ),
-                          )
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              child: CustomButton(
+                                child: const Text("Remove Video"),
+                                onPressed: () {
+                                  setState(() {
+                                    _controller = null;
+                                    isPause = false;
+                                  });
+                                },
+                              ))
                         ],
                       )
                     : InkWell(
@@ -178,11 +196,12 @@ class _HomeScreenState extends State<HomeScreen>
                                     text: 'KEYWORDS',
                                   ),
                                   Tab(
-                                    text: 'COMMENTS',
+                                    text: 'RATING',
                                   ),
                                 ],
                                 labelColor: primaryColor,
                                 indicatorColor: Colors.white,
+                                unselectedLabelColor: Colors.white,
                               ),
                               Row(
                                 mainAxisAlignment:
@@ -191,7 +210,10 @@ class _HomeScreenState extends State<HomeScreen>
                                   SizedBox(
                                     height: constraints.maxHeight - 48,
                                     child: IconButton(
-                                      icon: const Icon(Icons.arrow_back),
+                                      icon: const Icon(
+                                        Icons.arrow_back,
+                                        color: Colors.black,
+                                      ),
                                       onPressed: () {
                                         if (tabController.index != 0) {
                                           tabController.animateTo(
@@ -261,48 +283,53 @@ class _HomeScreenState extends State<HomeScreen>
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
-                                              Expanded(
-                                                child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  itemCount: comments.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return ListTile(
-                                                      leading: const Icon(
-                                                          Icons.comment),
-                                                      title:
-                                                          Text(comments[index]),
-                                                      trailing: IconButton(
-                                                        icon: const Icon(
-                                                            Icons.delete),
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            comments.removeAt(
-                                                                index);
-                                                          });
-                                                        },
-                                                      ),
-                                                    );
+                                              Flexible(
+                                                child: PieChart(
+                                                  totalValue: 100,
+                                                  colorList: const [
+                                                    Colors.green,
+                                                    Colors.red
+                                                  ],
+                                                  dataMap: const {
+                                                    "Positive": 60,
+                                                    "Negative": 40,
                                                   },
+                                                  chartValuesOptions:
+                                                      ChartValuesOptions(
+                                                    chartValueStyle:
+                                                        Theme.of(context)
+                                                            .textTheme
+                                                            .titleLarge!,
+                                                    showChartValueBackground:
+                                                        false,
+                                                    showChartValuesInPercentage:
+                                                        true,
+                                                    decimalPlaces: 1,
+                                                  ),
                                                 ),
                                               ),
                                               TextFormField(
-                                                controller: commentController,
+                                                cursorColor: Colors.black,
+                                                controller: urlController,
                                                 decoration: InputDecoration(
                                                     prefixIcon: const Icon(
-                                                        Icons.comment),
+                                                      Icons.link,
+                                                      color: Colors.black,
+                                                    ),
                                                     label: const Text(
-                                                        "Add New Comment!"),
+                                                      "Enter URL",
+                                                      style: TextStyle(
+                                                          color: Colors.black),
+                                                    ),
                                                     suffix: IconButton(
                                                       icon: const Icon(
-                                                          Icons.send),
+                                                        Icons.send,
+                                                        color: Colors.black,
+                                                      ),
                                                       onPressed: () {
                                                         setState(() {
-                                                          comments.add(
-                                                              commentController
-                                                                  .text);
-                                                          commentController
-                                                              .clear();
+                                                          url = urlController
+                                                              .text;
                                                         });
                                                       },
                                                     )),
@@ -316,7 +343,8 @@ class _HomeScreenState extends State<HomeScreen>
                                   SizedBox(
                                     height: constraints.maxHeight - 48,
                                     child: IconButton(
-                                      icon: const Icon(Icons.arrow_forward),
+                                      icon: const Icon(Icons.arrow_forward,
+                                          color: Colors.black),
                                       onPressed: () {
                                         if (tabController.index !=
                                             tabController.length) {

@@ -4,16 +4,17 @@ import 'package:dio/dio.dart';
 
 class AuthService {
   static Future<void> register(
-      {required String email,
+      {required String fullName,
       required String username,
       required String password}) async {
     try {
       await ApiService.postData(path: '/users/', data: {
         "username": username,
         "password": password,
-        "email": email,
+        "fullname": fullName,
       });
     } on DioException catch (e) {
+      print(e.response!.data);
       rethrow;
     }
   }

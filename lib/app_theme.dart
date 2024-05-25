@@ -6,18 +6,19 @@ const font = GoogleFonts.audiowideTextTheme;
 ThemeData appTheme() {
   return ThemeData(
     // scaffoldBackgroundColor: const Color(0xffC0C0C0),
-    scaffoldBackgroundColor: Colors.amber.shade900,
+    scaffoldBackgroundColor: Colors.purple.shade700,
     brightness: Brightness.dark,
     colorSchemeSeed: primaryColor,
+
     useMaterial3: true,
-    textTheme:
-        font.call().apply(displayColor: Colors.white, bodyColor: Colors.white),
+    textTheme: font.call().apply(),
     appBarTheme: const AppBarTheme(
       centerTitle: true,
       backgroundColor: Colors.transparent,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
     ),
+
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white.withOpacity(0.4),
