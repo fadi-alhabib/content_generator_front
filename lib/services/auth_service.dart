@@ -8,7 +8,7 @@ class AuthService {
       required String username,
       required String password}) async {
     try {
-      await ApiService.postData(path: '/users/', data: {
+      await ApiService.postData(path: '/api/users/', data: {
         "username": username,
         "password": password,
         "fullname": fullName,
@@ -23,7 +23,7 @@ class AuthService {
       {required String username, required String password}) async {
     try {
       Response? response =
-          await ApiService.postData(path: 'token/login/', data: {
+          await ApiService.postData(path: '/api/token/login/', data: {
         "username": username,
         "password": password,
       });
@@ -37,7 +37,7 @@ class AuthService {
 
   static Future<void> logout() async {
     try {
-      await ApiService.postAuthorized(path: 'token/logout/');
+      await ApiService.postAuthorized(path: '/api/token/logout/');
       await CacheService.clearData();
     } catch (e) {
       rethrow;

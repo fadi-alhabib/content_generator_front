@@ -5,11 +5,9 @@ import 'package:dio/dio.dart';
 class ApiService {
   static Dio? dio;
   static String? token;
-  static String baseUrl = "http://127.0.0.1:8000/api/";
+  static String baseUrl = "http://127.0.0.1:8000";
   static init() async {
-    dio = Dio(BaseOptions(
-      baseUrl: baseUrl,
-    ));
+    dio = Dio(BaseOptions());
   }
 
   static Future<Response?> getData(
