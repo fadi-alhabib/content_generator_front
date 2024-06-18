@@ -4,7 +4,7 @@ import 'dart:typed_data';
 import 'package:content_generator_front/constants.dart';
 import 'package:content_generator_front/helpers.dart';
 import 'package:content_generator_front/models/description_model.dart';
-import 'package:content_generator_front/services/ai_api_service.dart';
+import 'package:content_generator_front/services/ai_service.dart';
 import 'package:content_generator_front/widgets/button.dart';
 import 'package:content_generator_front/widgets/circles_background.dart';
 import 'package:dio/dio.dart';

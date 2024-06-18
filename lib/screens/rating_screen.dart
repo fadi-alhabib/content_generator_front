@@ -1,6 +1,6 @@
 import 'package:content_generator_front/helpers.dart';
 import 'package:content_generator_front/models/video_rating_model.dart';
-import 'package:content_generator_front/services/ai_api_service.dart';
+import 'package:content_generator_front/services/ai_service.dart';
 import 'package:content_generator_front/widgets/circles_background.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';

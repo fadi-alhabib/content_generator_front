@@ -1,12 +1,20 @@
 import 'package:content_generator_front/helpers.dart';
+import 'package:content_generator_front/services/ai_service.dart';
 import 'package:content_generator_front/widgets/circles_background.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class ValidateTitleScreen extends StatelessWidget {
+class ValidateTitleScreen extends StatefulWidget {
   static String routeName = "/validate-title";
   const ValidateTitleScreen({super.key});
 
+  @override
+  State<ValidateTitleScreen> createState() => _ValidateTitleScreenState();
+}
+
+class _ValidateTitleScreenState extends State<ValidateTitleScreen> {
+  TextEditingController controller = TextEditingController();
+  bool? isGood;
   @override
   Widget build(BuildContext context) {
     final screenSize = getScreenSize(context);
@@ -28,6 +36,7 @@ class ValidateTitleScreen extends StatelessWidget {
                     ),
                     const Gap(40),
                     TextFormField(
+                      controller: controller,
                       maxLines: null,
                       decoration: const InputDecoration(
                         hintText: "Enter the Title",
@@ -38,11 +47,25 @@ class ValidateTitleScreen extends StatelessWidget {
                       width: double.infinity,
                       height: 50,
                       child: ElevatedButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          AiService.validateTitle(title: controller.text).then(
+                            (value) => setState(() {
+                              isGood = value;
+                            }),
+                          );
+                        },
                         label: const Text("Submit"),
                         icon: const Icon(Icons.send),
                       ),
-                    )
+                    ),
+                    if (isGood != null)
+                      Text(
+                        isGood! ? "Good Title" : "Bad Title",
+                        style:
+                            Theme.of(context).textTheme.titleMedium!.copyWith(
+                                  color: isGood! ? Colors.green : Colors.red,
+                                ),
+                      )
                   ],
                 ),
               ),

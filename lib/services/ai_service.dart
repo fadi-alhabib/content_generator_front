@@ -31,4 +31,10 @@ class AiService {
         await ApiService.postData(path: "/describe_video", data: formData);
     return DescriptionModel.fromMap(response!.data);
   }
+
+  static Future<bool> validateTitle({required String title}) async {
+    Response? response =
+        await ApiService.postData(path: "/predict", data: {"text": title});
+    return bool.parse(response!.data["predict"]);
+  }
 }
