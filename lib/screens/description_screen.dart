@@ -131,6 +131,7 @@ class _DescriptionScreenState extends State<DescriptionScreen>
                                 onPressed: () {
                                   setState(() {
                                     _controller = null;
+                                    description = null;
                                     isPause = false;
                                   });
                                 },

@@ -10,16 +10,16 @@ const primaryColor = Colors.black;
 const iconsPath = "assets/icons/";
 List containers = [
   {
-    'border': Colors.amber,
-    'body': Colors.amber.withOpacity(.5),
+    'border': Colors.lime,
+    'body': Colors.lime.withOpacity(.5),
     "title": "Generate video title",
     "description": "Upload your video to generate a title for it",
     "icon": "$iconsPath/video.json",
     "routeName": TitleScreen.routeName,
   },
   {
-    'border': Colors.orange,
-    'body': Colors.orange.withOpacity(.5),
+    'border': Colors.teal,
+    'body': Colors.teal.withOpacity(.5),
     "title": "Generate video Description",
     "description": "Upload your video and get a perfect description for it",
     "icon": "$iconsPath/document.json",

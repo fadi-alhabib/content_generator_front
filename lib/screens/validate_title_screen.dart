@@ -59,12 +59,15 @@ class _ValidateTitleScreenState extends State<ValidateTitleScreen> {
                       ),
                     ),
                     if (isGood != null)
-                      Text(
-                        isGood! ? "Good Title" : "Bad Title",
-                        style:
-                            Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  color: isGood! ? Colors.green : Colors.red,
-                                ),
+                      Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Text(
+                          isGood! ? "Good Title" : "Bad Title",
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: isGood! ? Colors.green : Colors.red,
+                                  ),
+                        ),
                       )
                   ],
                 ),

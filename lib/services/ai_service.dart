@@ -1,12 +1,11 @@
 import 'dart:convert';
 
-import 'package:content_generator_front/models/description_model.dart';
 import 'package:content_generator_front/models/video_rating_model.dart';
 import 'package:content_generator_front/services/api_service.dart';
 import 'package:dio/dio.dart';
 
 class AiService {
-  static String aiUrl = "http://4aad-35-236-144-253.ngrok-free.app";
+  static String aiUrl = "https://eadf-35-237-30-118.ngrok-free.app";
   static Future<List<String>> generateKeywords(
       {required String description}) async {
     Response? response =
@@ -30,11 +29,14 @@ class AiService {
       "file": file,
     });
     Response? response = await ApiService.postData(
-        path: "$aiUrl/extract-text-from-video/",
+        path: "$aiUrl/describe_video/",
         data: formData,
         headers: {"content_type": "multipart/form-data"});
     print(response!.data);
-    return response.data["recognized_text"];
+    if (response.data["recognized_text"] != null) {
+      return response.data["recognized_text"];
+    }
+    return response.data["greedy_caption"];
   }
 
   static Future<bool> validateTitle({required String title}) async {

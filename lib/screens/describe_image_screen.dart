@@ -58,6 +58,7 @@ class _DescribeImageScreenState extends State<DescribeImageScreen> {
             ElevatedButton(
                 onPressed: () => setState(() {
                       _imageData = null;
+                      description = null;
                     }),
                 child: const Text("Remove")),
           if (_imageData != null)
