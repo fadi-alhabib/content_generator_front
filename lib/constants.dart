@@ -1,6 +1,8 @@
+import 'package:content_generator_front/screens/describe_image_screen.dart';
 import 'package:content_generator_front/screens/keywords_screen.dart';
 import 'package:content_generator_front/screens/rating_screen.dart';
 import 'package:content_generator_front/screens/description_screen.dart';
+import 'package:content_generator_front/screens/title_screen.dart';
 import 'package:content_generator_front/screens/validate_title_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,7 +15,7 @@ List containers = [
     "title": "Generate video title",
     "description": "Upload your video to generate a title for it",
     "icon": "$iconsPath/video.json",
-    "routeName": DescriptionScreen.routeName,
+    "routeName": TitleScreen.routeName,
   },
   {
     'border': Colors.orange,
@@ -47,5 +49,13 @@ List containers = [
     "description": "Enter video description and get the Keywords",
     "icon": "$iconsPath/heart.json",
     "routeName": KeywordsScreen.routeName,
+  },
+  {
+    'border': Colors.purple,
+    'body': Colors.purple.withOpacity(.6),
+    "title": "Describe an Image",
+    "description": "Upload your image and get a description for it",
+    "icon": "$iconsPath/describe_image.json",
+    "routeName": DescribeImageScreen.routeName,
   },
 ];

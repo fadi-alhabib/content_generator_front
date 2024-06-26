@@ -3,16 +3,12 @@ import 'dart:typed_data';
 
 import 'package:content_generator_front/constants.dart';
 import 'package:content_generator_front/helpers.dart';
-import 'package:content_generator_front/models/description_model.dart';
 import 'package:content_generator_front/services/ai_service.dart';
 import 'package:content_generator_front/widgets/button.dart';
 import 'package:content_generator_front/widgets/circles_background.dart';
 import 'package:dio/dio.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
-import 'package:gap/gap.dart';
-import 'package:pie_chart/pie_chart.dart';
 import 'package:video_player/video_player.dart';
 
 class DescriptionScreen extends StatefulWidget {
@@ -30,7 +26,7 @@ class _DescriptionScreenState extends State<DescriptionScreen>
   late TabController tabController;
   late TextEditingController urlController;
   String? url;
-  DescriptionModel? description;
+  String? description;
 
   Future<void> _pickVideo() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -69,6 +65,7 @@ class _DescriptionScreenState extends State<DescriptionScreen>
     _controller!.dispose();
   }
 
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     final screenSize = getScreenSize(context);
@@ -158,28 +155,64 @@ class _DescriptionScreenState extends State<DescriptionScreen>
                     width: _controller!.value.size.width,
                     height: 50,
                     child: ElevatedButton.icon(
-                      onPressed: () async {
-                        AiService.generateDescription(
-                                file: MultipartFile.fromBytes(_videoBytes!))
-                            .then(
-                          (value) {
-                            setState(() {
-                              description = value;
-                            });
-                          },
-                        ).onError(
-                          (error, stackTrace) {
-                            print(error);
-                          },
-                        );
-                      },
+                      onPressed: isLoading
+                          ? null
+                          : () async {
+                              setState(() {
+                                isLoading = true;
+                              });
+                              AiService.generateDescription(
+                                      file: MultipartFile.fromBytes(
+                                          _videoBytes!,
+                                          filename: "file"))
+                                  .then(
+                                (value) {
+                                  setState(() {
+                                    description = value;
+                                    isLoading = false;
+                                  });
+                                },
+                              ).onError(
+                                (error, stackTrace) {
+                                  print(error);
+                                  setState(() {
+                                    isLoading = false;
+                                  });
+                                },
+                              );
+                            },
                       label: const Text("Submit"),
                       icon: const Icon(Icons.send),
                     ),
                   ),
                 if (description != null)
                   Container(
-                    child: Text(description!.greedyCaption!),
+                    padding: const EdgeInsets.all(20),
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.circular(20),
+                        color: Colors.black12),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Description:",
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: Colors.grey.shade300),
+                        ),
+                        Text(
+                          description!,
+                          style: Theme.of(context)
+                              .textTheme
+                              .titleLarge!
+                              .copyWith(color: Colors.grey.shade300),
+                        ),
+                      ],
+                    ),
                   ),
               ],
             ),

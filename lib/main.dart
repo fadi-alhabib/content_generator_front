@@ -1,4 +1,5 @@
 import 'package:content_generator_front/app_theme.dart';
+import 'package:content_generator_front/screens/describe_image_screen.dart';
 import 'package:content_generator_front/screens/home_screen.dart';
 import 'package:content_generator_front/screens/keywords_screen.dart';
 import 'package:content_generator_front/screens/login_screen.dart';
@@ -36,6 +37,7 @@ class MyApp extends StatelessWidget {
         ValidateTitleScreen.routeName: (context) => const ValidateTitleScreen(),
         RatingScreen.routeName: (context) => const RatingScreen(),
         TitleScreen.routeName: (context) => const TitleScreen(),
+        DescribeImageScreen.routeName: (context) => const DescribeImageScreen(),
       },
     );
   }

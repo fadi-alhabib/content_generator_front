@@ -69,7 +69,7 @@ class _RatingScreenState extends State<RatingScreen> {
                           colorList: const [Colors.green, Colors.red],
                           dataMap: {
                             "Positive": rating!.positivePercentage!.toDouble(),
-                            "Negative": rating!.positivePercentage!.toDouble(),
+                            "Negative": rating!.negativePercentage!.toDouble(),
                           },
                           chartValuesOptions: ChartValuesOptions(
                             chartValueStyle:

@@ -6,9 +6,11 @@ import 'package:content_generator_front/services/api_service.dart';
 import 'package:dio/dio.dart';
 
 class AiService {
+  static String aiUrl = "http://4aad-35-236-144-253.ngrok-free.app";
   static Future<List<String>> generateKeywords(
       {required String description}) async {
-    Response? response = await ApiService.postData(path: "/keywords", data: {
+    Response? response =
+        await ApiService.postData(path: "$aiUrl/keywords", data: {
       "text": description,
     });
     print(response);
@@ -17,24 +19,47 @@ class AiService {
 
   static Future<VideoRatingModel> generateRating({required String url}) async {
     Response? response = await ApiService.postData(
-        path: "/analyze_comments", data: {"url": url});
+        path: "$aiUrl/analyze_comments/", data: {"url": url});
 
     return VideoRatingModel.fromMap(response!.data);
   }
 
-  static Future<DescriptionModel> generateDescription(
+  static Future<String> generateDescription(
       {required MultipartFile file}) async {
     FormData formData = FormData.fromMap({
       "file": file,
     });
-    Response? response =
-        await ApiService.postData(path: "/describe_video", data: formData);
-    return DescriptionModel.fromMap(response!.data);
+    Response? response = await ApiService.postData(
+        path: "$aiUrl/extract-text-from-video/",
+        data: formData,
+        headers: {"content_type": "multipart/form-data"});
+    print(response!.data);
+    return response.data["recognized_text"];
   }
 
   static Future<bool> validateTitle({required String title}) async {
-    Response? response =
-        await ApiService.postData(path: "/predict", data: {"text": title});
-    return bool.parse(response!.data["predict"]);
+    Response? response = await ApiService.postData(
+        path: "$aiUrl/predict", data: {"text": title});
+
+    return response!.data["prediction"] == 0 ? false : true;
+  }
+
+  static Future<String> generateTitle({required String description}) async {
+    Response? response = await ApiService.postData(
+        path: "$aiUrl/summarize", data: {"text": description});
+    return response!.data["summary"];
+  }
+
+  static Future<String> generateImageDescription(
+      {required MultipartFile file}) async {
+    FormData formData = FormData.fromMap({
+      "file": file,
+    });
+    Response? response = await ApiService.postData(
+        path: "$aiUrl/generate_caption/",
+        data: formData,
+        headers: {"content_type": "multipart/form-data"});
+    print(response!.data);
+    return response.data["predicted_caption"];
   }
 }
